@@ -37,16 +37,6 @@ type Building = OilRigBuilding
 //     maxLevel: number,
 
 // }
-
-const $userSlots = createStore([
-    'oil-ring',
-    'oil-ring',
-    'electricity-station',
-    'electricity-station',
-    'oilbank',
-    'oilbank'
-])
-
 type UserBuilding = {
     building: BuildingType,
     tier: number,
@@ -106,33 +96,92 @@ type UserBuildingSlot = {
     slottedBuilding?: UserBuilding
 }
 
-const $userBuildingSlots = createStore([]) 
+const $userBuildingSlots = createStore<UserBuildingSlot[]>([
+    {
+        building: BuildingType.OilRig,
+    },
+    {
+        building: BuildingType.ElectricityStation,
+    },
+    {
+        building: BuildingType.OilBank,
+    },
+    {
+        building: BuildingType.OilRig,
+    },
+    {
+        building: BuildingType.ElectricityStation,
+    },
+    {
+        building: BuildingType.OilBank,
+    },
+    {
+        building: BuildingType.OilRig,
+    },
+    {
+        building: BuildingType.ElectricityStation,
+    },
+    {
+        building: BuildingType.OilBank,
+    }
+]) 
 
 function UserResources() {
     const [oil, electricity, oilcoin, virtualTon] = useUnit([$oil, $electricity, $oilcoin, $virtualTon])
 
-    return <div className="grid gap-1 grid-cols-4 h-32">
-        <div className='flex flex-col justify-center items-center'>
-            <img className='w-10 h-10 object-contain' src='/images/resources/oil.png' />
+    return <div className="grid gap-1 grid-cols-4 h-36 bg-cover" style={{backgroundImage: "url(/images/resources.png)"}}>
+        <div className='font-bold flex flex-col justify-center items-center'>
+            <img className='mb-4 w-14 h-14 object-contain' src='/images/resources/oil.png' />
             <span>{oil}</span>
         </div>
-        <div className='flex flex-col justify-center items-center'>
-            <img className='w-10 h-10 object-contain' src='/images/resources/electricity.png' />
+        <div className='font-bold flex flex-col justify-center items-center'>
+            <img className='mb-4 w-14 h-14 object-contain' src='/images/resources/electricity.png' />
             <span>{electricity}</span>
         </div>
-        <div className='flex flex-col justify-center items-center'>
-            <img className='w-10 h-10 object-contain' src='/images/resources/oil-coin.png' />
+        <div className='font-bold flex flex-col justify-center items-center'>
+            <img className='mb-4 w-14 h-14 object-contain' src='/images/resources/oil-coin.png' />
             <span>{oilcoin}</span>
         </div>
-        <div className='flex flex-col justify-center items-center'>
-            <img className='w-10 h-10 object-contain' src='/images/resources/virtual-ton.png' />
+        <div className='font-bold flex flex-col justify-center items-center'>
+            <img className='mb-4 w-14 h-14 object-contain' src='/images/resources/virtual-ton.png' />
             <span>{virtualTon}</span>
         </div>
+    </div>
+}
+
+function UserBuildingSlots() {
+    const userBuildingSlots = useUnit($userBuildingSlots)
+
+    return <div className='w-full gap-3 grid grid-cols-3'>
+        {userBuildingSlots.map(() => {
+            return <div className='rounded-[30px] bg-[rgba(0,0,0,0.5)] aspect-square border-4'>1</div>
+        })}
+    </div>
+}
+
+function UserEnergy() {
+    const [energy, maxEnergy] = useUnit([$energy, $maxEnergy])
+
+    return <div className="my-4 px-4 w-full flex relative h-16 flex items-center">
+        <div className='flex w-full bg-blue-400 relative'>
+            <progress className="progress progress-error w-full h-12" value={energy} max={maxEnergy} />
+
+            <div className="font-bold absolute inset-0 flex justify-center items-center">{energy} / {maxEnergy}</div>
+        </div>
+
+        <div className='absolute left-0 w-16 h-16 bg-blue-300 rounded-full flex justify-center items-center'>e</div>
+        <div className='absolute right-0 w-16 h-16 bg-blue-300 rounded-full flex justify-center items-center'>+</div>
     </div>
 }
 
 export function HomePage() {
     return <div>
         <UserResources />
+
+        <UserEnergy />
+        
+        <h2 className="uppercase text-center my-4 text-5xl drop-shadow-md">My Business</h2>
+
+        <UserBuildingSlots />
     </div>
 }
