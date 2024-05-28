@@ -16,21 +16,19 @@ const $maxEnergy = createStore(1000)
 // TODO
 
 enum BuildingType {
-    OilRig,
-    ElectricityStation,
-    OilBank,
+    Pump = 'pump',
+    PowerStation = 'power-station',
+    OilBank = 'oil-bank',
 
-    General
+    General = 'general'
 }
 
-type OilRigBuilding = {
-    type: BuildingType.OilRig,
+type PumpBuilding = {
+    type: BuildingType.Pump,
     maxTier: 5
 }
 
-type Building = OilRigBuilding
-
-// type BuildingType = 'oil-rig' | 'electricity-station' | 'oilbank'
+type Building = PumpBuilding
 
 // type Building = {
 //     level: number,
@@ -45,12 +43,12 @@ type UserBuilding = {
 
 const $userBuildings = createStore<UserBuilding[]>([
     {
-        building: BuildingType.OilRig,
+        building: BuildingType.Pump,
         tier: 0,
         phase: 'idle'
     },
     {
-        building: BuildingType.ElectricityStation,
+        building: BuildingType.PowerStation,
         tier: 0,
         phase: 'idle'
     },
@@ -59,70 +57,40 @@ const $userBuildings = createStore<UserBuilding[]>([
         tier: 0,
         phase: 'idle'
     },
-    // {
-    //     building: BuildingType.OilRig,
-    //     tier: 0,
-    //     phase: 'idle'
-    // },
-    // {
-    //     building: BuildingType.OilRig,
-    //     tier: 0,
-    //     phase: 'idle'
-    // },electricity
-    // {
-    //     building: BuildingType.ElectricityStation,
-    //     tier: 0,
-    //     phase: 'idle'
-    // },
-    // {
-    //     building: BuildingType.ElectricityStation,
-    //     tier: 0,
-    //     phase: 'idle'
-    // },
-    // {
-    //     building: BuildingType.OilBank,
-    //     tier: 0,
-    //     phase: 'idle'
-    // },
-    // {
-    //     building: BuildingType.OilBank,
-    //     tier: 0,
-    //     phase: 'idle'
-    // }
 ])
 
 type UserBuildingSlot = {
-    building: BuildingType,
+    buildingType: BuildingType,
     slottedBuilding?: UserBuilding
 }
 
 const $userBuildingSlots = createStore<UserBuildingSlot[]>([
     {
-        building: BuildingType.OilRig,
+        buildingType: BuildingType.Pump,
     },
     {
-        building: BuildingType.ElectricityStation,
+        buildingType: BuildingType.PowerStation,
     },
     {
-        building: BuildingType.OilBank,
+        buildingType: BuildingType.OilBank,
     },
     {
-        building: BuildingType.OilRig,
+        buildingType: BuildingType.Pump,
     },
     {
-        building: BuildingType.ElectricityStation,
+        buildingType: BuildingType.PowerStation,
     },
     {
-        building: BuildingType.OilBank,
+        buildingType: BuildingType.OilBank,
     },
     {
-        building: BuildingType.OilRig,
+        buildingType: BuildingType.Pump,
     },
     {
-        building: BuildingType.ElectricityStation,
+        buildingType: BuildingType.PowerStation,
     },
     {
-        building: BuildingType.OilBank,
+        buildingType: BuildingType.OilBank,
     }
 ]) 
 
@@ -153,8 +121,14 @@ function UserBuildingSlots() {
     const userBuildingSlots = useUnit($userBuildingSlots)
 
     return <div className='w-full gap-3 grid grid-cols-3'>
-        {userBuildingSlots.map(() => {
-            return <div className='rounded-[30px] bg-[rgba(0,0,0,0.5)] aspect-square border-4'>1</div>
+        {userBuildingSlots.map((slot, idx) => {
+            if(slot.slottedBuilding) {
+                return <div key={idx} className='rounded-[30px] bg-[rgba(0,0,0,0.5)] aspect-square border-4'>1</div>
+            }
+
+            return <div key={idx} className='rounded-[30px] bg-[rgba(0,0,0,0.5)] aspect-square border-4'>
+                <img className='p-10' src={`/images/slots/${slot.buildingType}.png`} />
+            </div>
         })}
     </div>
 }
@@ -174,7 +148,7 @@ function UserEnergy() {
     </div>
 }
 
-export function HomePage() {
+export function MainPage() {
     return <div>
         <UserResources />
 
