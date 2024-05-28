@@ -13,6 +13,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "effector": "^23.2.2",
+    "effector-react": "^23.2.1",
+    "effector-storage": "^7.1.0",
     "eslint-plugin-effector": "^0.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
